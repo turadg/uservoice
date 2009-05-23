@@ -9,10 +9,12 @@
  */
 
 /**
- * Add js to everypage if Feedback Tab enabled.
+ * Implementation of hook_init().
  */
-if (variable_get('uservoice_feedback_tab_enabled', FALSE)) {
-  _uservoice_create_feedback_tab();
+function uservoice_init() {
+  if (variable_get('uservoice_feedback_tab_enabled', FALSE)) {
+    _uservoice_create_feedback_tab();
+  }
 }
 
 /**
