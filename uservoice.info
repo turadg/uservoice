@@ -1,0 +1,5 @@
+; $Id$
+name = UserVoice
+description = "UserVoice support module."
+core = 6.x
+package = Support

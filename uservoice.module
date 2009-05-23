@@ -1,0 +1,145 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Configure setting for interacting with UserVoice.
+ *
+ * Adds Feedback Tab, SSO, and API interaction with the feedback service UserVoice.
+ */
+
+/**
+ * Add js to everypage if Feedback Tab enabled.
+ */
+if (variable_get('uservoice_feedback_tab_enabled', FALSE)) {
+  _uservoice_create_feedback_tab();
+}
+
+/**
+ * Valid permissions for this module
+ * @return
+ *   array An array of permissions for the uservoice module
+ */
+function uservoice_perm() {
+  return array('administer uservoice', 'access uservoice sso');
+} // function uservoice_perm()
+
+/**
+ * Implementation of hook_menu().
+ */
+function uservoice_menu() {
+  $items = array();
+  $items['admin/settings/uservoice'] = array(
+    'title' => 'UserVoice',
+    'description' => 'Enable and configure UserVoice settings.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('uservoice_admin'),
+    'access arguments' => array('administration uservoice'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  return $items;
+} // function uservoice_menu().
+
+/**
+ * Returns string for drupal_add_js() to pull Feedback Tab javascript from UserVoice.
+ */
+function _uservoice_create_feedback_tab() {
+  $key = variable_get('uservoice_feedback_tab_key', FALSE);
+  $host = variable_get('uservoice_feedback_tab_host', FALSE);
+  $forum = variable_get('uservoice_feedback_tab_forum', 'general');
+  $alignment = variable_get('uservoice_feedback_tab_alignment', 'left');
+  $background_color = variable_get('uservoice_feedback_tab_background_color', '#ff0000');
+  $text_color = variable_get('uservoice_feedback_tab_text_color', 'white');
+  $hover_color = variable_get('uservoice_feedback_tab_hover_color', '#0066cc');
+  $lang = variable_get('uservoice_feedback_tab_lang', 'en');
+  $js_widget_1 = <<<JS_WIDGET_1
+    var uservoiceJsHost = ("https:" == document.location.protocol) ? "https://uservoice.com" : "http://cdn.uservoice.com";
+    document.write(unescape("%3Cscript src='" + uservoiceJsHost + "/javascripts/widgets/tab.js' type='text/javascript'%3E%3C/script%3E"))
+JS_WIDGET_1;
+  $js_widget_2 = <<<JS_WIDGET_2
+  UserVoice.Tab.show({
+    key: '$key',
+    host: '$host',
+    forum: '$forum',
+    alignment: '$alignment',
+    background_color:'$background_color',
+    text_color: '$text_color',
+    hover_color: '$hover_color',
+    lang: '$lang'
+  })
+JS_WIDGET_2;
+  if ($key && $host) {
+    drupal_add_js($js_widget_1, 'inline', 'footer');
+    drupal_add_js($js_widget_2, 'inline', 'footer');
+  }
+} // function _uservoice_create_feedback_tab().
+
+/**
+ * Implementation of hook_admin().
+ */
+function uservoice_admin() {
+  variable_get('uservoice_feedback_tab_enabled', FALSE) ? $enabled = TRUE : $enabled = FALSE;
+  $form = array();
+  $form['uservoice_feedback_tab_enabled'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Feedback Tab.'),
+    '#default_value' => variable_get('uservoice_feedback_tab_enabled', FALSE),
+    '#description' => t("Enables the Feedback Tab on all pages."),
+  );
+  $form['feedback_tab'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Feedback Tab settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => !$enabled,
+  );
+  $form['feedback_tab']['uservoice_feedback_tab_key'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Your UserVoice subdomain'),
+    '#required' => $enabled,
+    '#default_value' => variable_get('uservoice_feedback_tab_key', ''),
+  );
+  $form['feedback_tab']['uservoice_feedback_tab_host'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Your UserVoice URL'),
+    '#required' => $enabled,
+    '#default_value' => variable_get('uservoice_feedback_tab_host', ''),
+    '#description' => t("example.uservoice.com"),
+  );
+  $form['feedback_tab']['uservoice_feedback_tab_forum'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Key for chosen Topic (aka Forum) '),
+    '#required' => $enabled,
+    '#default_value' => variable_get('uservoice_feedback_tab_forum', 'general'),
+  );
+  $form['feedback_tab']['uservoice_feedback_tab_alignment'] = array(
+    '#type' => 'radios',
+    '#title' => t('Alignment'),
+    '#default_value' => variable_get('uservoice_feedback_tab_alignment', 'left'),
+    '#options' => array('left' => t('left'), 'right' => t('right')),
+  );
+  $form['feedback_tab']['uservoice_feedback_tab_background_color'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Background color'),
+    '#default_value' => variable_get('uservoice_feedback_tab_background_color', '#ff0000'),
+    '#description' => t("Hex color code. Example: #ff0000"),
+  );
+  $form['feedback_tab']['uservoice_feedback_tab_text_color'] = array(
+    '#type' => 'select',
+    '#title' => t('Text color'),
+    '#default_value' => variable_get('uservoice_feedback_tab_text_color', 'white'),
+    '#options' => array('white' => t('white'), 'black' => t('black'), 'blank' => t('blank')),
+  );
+  $form['feedback_tab']['uservoice_feedback_tab_hover_color'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Hover color'),
+    '#default_value' => variable_get('uservoice_feedback_tab_hover_color', '#0066cc'),
+    '#description' => t("Hex color code. Example: #0066cc"),
+  );
+  $form['feedback_tab']['uservoice_feedback_tab_lang'] = array(
+    '#type' => 'select',
+    '#title' => t('Language'),
+    '#default_value' => variable_get('uservoice_feedback_tab_lang', 'en'),
+    '#options' => array('en' => t('English'), 'de' => t('German'), 'nl' => t('Dutch'), 'es' => t('Spanish'), 'fr' => t('French'), 'pt_BR' => t('Portuguese')),
+  );
+  return system_settings_form($form);
+} // function uservoice_admin().
