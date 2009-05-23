@@ -86,7 +86,7 @@ function uservoice_admin() {
     '#type' => 'checkbox',
     '#title' => t('Enable Feedback Tab.'),
     '#default_value' => variable_get('uservoice_feedback_tab_enabled', FALSE),
-    '#description' => t("Enables the Feedback Tab on all pages."),
+    '#description' => t('Enables the Feedback Tab on all pages.'),
   );
   $form['feedback_tab'] = array(
     '#type' => 'fieldset',
@@ -105,7 +105,7 @@ function uservoice_admin() {
     '#title' => t('Your UserVoice URL'),
     '#required' => $enabled,
     '#default_value' => variable_get('uservoice_feedback_tab_host', ''),
-    '#description' => t("example.uservoice.com"),
+    '#description' => t('example.uservoice.com'),
   );
   $form['feedback_tab']['uservoice_feedback_tab_forum'] = array(
     '#type' => 'textfield',
@@ -123,7 +123,7 @@ function uservoice_admin() {
     '#type' => 'textfield',
     '#title' => t('Background color'),
     '#default_value' => variable_get('uservoice_feedback_tab_background_color', '#ff0000'),
-    '#description' => t("Hex color code. Example: #ff0000"),
+    '#description' => t('Hex color code. Example: #ff0000),
   );
   $form['feedback_tab']['uservoice_feedback_tab_text_color'] = array(
     '#type' => 'select',
@@ -135,7 +135,7 @@ function uservoice_admin() {
     '#type' => 'textfield',
     '#title' => t('Hover color'),
     '#default_value' => variable_get('uservoice_feedback_tab_hover_color', '#0066cc'),
-    '#description' => t("Hex color code. Example: #0066cc"),
+    '#description' => t('Hex color code. Example: #0066cc'),
   );
   $form['feedback_tab']['uservoice_feedback_tab_lang'] = array(
     '#type' => 'select',
