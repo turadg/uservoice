@@ -36,7 +36,7 @@ function uservoice_menu() {
     'description' => 'Enable and configure UserVoice settings.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('uservoice_admin'),
-    'access arguments' => array('administration uservoice'),
+    'access arguments' => array('administer site configuration', 'administration uservoice'),
     'type' => MENU_NORMAL_ITEM,
   );
   return $items;
