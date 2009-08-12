@@ -35,7 +35,7 @@ function uservoice_init() {
  *   array An array of permissions for the uservoice module
  */
 function uservoice_perm() {
-  return array('administer uservoice', 'access uservoice sso');
+  return array('administer uservoice');
 } // function uservoice_perm()
 
 /**
