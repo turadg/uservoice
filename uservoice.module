@@ -36,7 +36,7 @@ function uservoice_init() {
  */
 function uservoice_perm() {
   return array('administer uservoice');
-} // function uservoice_perm()
+}
 
 /**
  * Implementation of hook_menu().
@@ -52,7 +52,7 @@ function uservoice_menu() {
     'type' => MENU_NORMAL_ITEM,
   );
   return $items;
-} // function uservoice_menu().
+}
 
 /**
  * Returns string for drupal_add_js() to pull Feedback Tab javascript from UserVoice.
@@ -86,7 +86,7 @@ JS_WIDGET_2;
     drupal_add_js($js_widget_1, 'inline', 'footer');
     drupal_add_js($js_widget_2, 'inline', 'footer');
   }
-} // function _uservoice_create_feedback_tab().
+}
 
 /**
  * Implementation of hook_admin().
@@ -156,4 +156,4 @@ function uservoice_admin() {
     '#options' => array('en' => t('English'), 'de' => t('German'), 'nl' => t('Dutch'), 'es' => t('Spanish'), 'fr' => t('French'), 'pt_BR' => t('Portuguese')),
   );
   return system_settings_form($form);
-} // function uservoice_admin().
+}
