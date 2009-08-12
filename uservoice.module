@@ -47,7 +47,7 @@ function uservoice_menu() {
     'title' => 'UserVoice',
     'description' => 'Enable and configure UserVoice settings.',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('uservoice_admin'),
+    'page arguments' => array('_uservoice_admin_settings'),
     'access arguments' => array('administer uservoice'),
     'type' => MENU_NORMAL_ITEM,
   );
@@ -89,9 +89,9 @@ JS_WIDGET_2;
 }
 
 /**
- * Implementation of hook_admin().
+ * Settings form for administration.
  */
-function uservoice_admin() {
+function _uservoice_admin_settings() {
   variable_get('uservoice_feedback_tab_enabled', FALSE) ? $enabled = TRUE : $enabled = FALSE;
   $form = array();
   $form['uservoice_feedback_tab_enabled'] = array(
