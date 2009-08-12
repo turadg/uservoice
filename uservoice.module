@@ -8,6 +8,18 @@
  * Adds Feedback Tab, SSO, and API interaction with the feedback service UserVoice.
  */
 
+
+/**
+ * Implementation of hook_help().
+ */
+function uservoice_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#uservoice':
+      return t('<a href="@url">Uservoice</a> is a tool to let users suggest and vote on ideas, and report bugs. This module provides services to better integrate Drupal with Uservoice.', array('@url' => 'http://uservoice.com/'));
+  }
+}
+
+
 /**
  * Implementation of hook_init().
  */
